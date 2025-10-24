@@ -17,26 +17,9 @@ if "%CROSSWORD_DEST_BASE%"=="" (
     set "CROSSWORD_DEST_BASE=%CD%"
 )
 
-REM Get current year and month
-for /f "tokens=1-3 delims=/ " %%a in ('date /t') do (
-    set "MONTH=%%a"
-    set "DAY=%%b"
-    set "YEAR=%%c"
-)
-
-REM Convert numeric month to 3-letter abbreviation
-if "%MONTH%"=="01" set "MONTH_ABBR=Jan"
-if "%MONTH%"=="02" set "MONTH_ABBR=Feb"
-if "%MONTH%"=="03" set "MONTH_ABBR=Mar"
-if "%MONTH%"=="04" set "MONTH_ABBR=Apr"
-if "%MONTH%"=="05" set "MONTH_ABBR=May"
-if "%MONTH%"=="06" set "MONTH_ABBR=Jun"
-if "%MONTH%"=="07" set "MONTH_ABBR=Jul"
-if "%MONTH%"=="08" set "MONTH_ABBR=Aug"
-if "%MONTH%"=="09" set "MONTH_ABBR=Sep"
-if "%MONTH%"=="10" set "MONTH_ABBR=Oct"
-if "%MONTH%"=="11" set "MONTH_ABBR=Nov"
-if "%MONTH%"=="12" set "MONTH_ABBR=Dec"
+REM Get current year and month using PowerShell (locale-independent)
+for /f %%i in ('powershell -command "Get-Date -Format yyyy"') do set "YEAR=%%i"
+for /f %%i in ('powershell -command "Get-Date -Format MMM"') do set "MONTH_ABBR=%%i"
 
 set "DEST=%CROSSWORD_DEST_BASE%\NewYorkTimes\%YEAR%\%MONTH_ABBR%"
 if not exist "%DEST%" mkdir "%DEST%"
